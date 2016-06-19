@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "SearchCar";
+}
+@using LX.Enums
+@using LX.Infrastructure
+@using LX.Infrastructure.Routing
+@model List<LX.Models.CarVm>
+
+<div class="g-col-s-3 btn-back">
+    <a class="btn btn-orange" href="@Html.Back()">
+        <i class="glyphicon glyphicon-arrow-left icon-s"></i>
+        <span class="hit-counter"></span> @Translations.Translate("BackButton", ContentType.SiteContent)
+    </a>
+</div>
+<div class="g-row">
+    <div class="g-col-s-12">
+        @Html.LanguageDropdown()
+    </div>
+</div>
+<div class="cBox cBox-content">
+    <div class="cBox-body">
+        <h4 class="h3 lang-header">@Translations.Translate("SearchResults", ContentType.SiteContent)</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>@Translations.Translate("Index.Page.Box_2.Make", ContentType.SiteContent)</th>
+                    <th>@Translations.Translate("Index.Page.Box_2.Model", ContentType.SiteContent)</th>
+                    <th>@Translations.Translate("Index.Page.Box_6.Header.Motor", ContentType.SiteContent)</th>
+                    <th>@Translations.Translate("ForRent", ContentType.SiteContent)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var car in Model)
+                {
+                    <tr>
+                        <td>@car.Make</td>
+                        <td>@car.Model.Name</td>
+                        <td>@Translations.Translate("" + car.Motor + "", ContentType.SiteContent)</td>
+                        <td>@(car.ForRent == false ? Translations.Translate("Wanted", ContentType.SiteContent) : Translations.Translate("ForSale", ContentType.SiteContent))</td>
+                   </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

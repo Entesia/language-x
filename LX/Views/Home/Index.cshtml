@@ -1,0 +1,119 @@
+﻿@using System.Web.Script.Serialization
+@using LX.Enums
+@using LX.Infrastructure
+@using LX.Infrastructure.Routing
+@{
+    ViewBag.Title = "Home Page";
+}
+@model LX.Models.CriteriaVm
+<div class="viewport">
+    <form name="form-submit" method="GET" action="@Html.LanguageUrl()" onsubmit="return validateForm()">
+        <div class="g-row">
+            <div class="g-col-s-12">
+                @Html.LanguageDropdown()
+            </div>
+        </div>
+        <div class="g-row">
+            <div class="g-col-s-12">
+                <div class="cBox cBox-content">
+                    <div class="cBox-body">
+                        <div class="g-row">
+                            <div class="g-col-s-3">
+                                <div class="form-group">
+                                    <input type="text" id="client" class="mmh-model-desc form-control" placeholder="@Translations.Translate("ClientSideValidation", ContentType.SiteContent)">
+                                    <label id="clientMassge" class="hide">@Html.Raw(Translations.Translate("MessageForError", ContentType.Validation))</label>
+                                </div>
+                            </div>
+                            <div class="g-col-s-3">
+                                <div class="form-group">
+                                    <input type="text" class="mmh-model-desc form-control" name="Error" placeholder="@Translations.Translate("ServerSideValidation", ContentType.SiteContent)">
+                                    <label id="validation">@Model.Error</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="g-row">
+                            <div class="g-col-s-3">
+                                <label for="make">@Translations.Translate("Index.Page.Box_2.Make", ContentType.SiteContent)</label>
+                            </div>
+                            <div class="g-col-s-3">
+                                <label for="model">@Translations.Translate("Index.Page.Box_2.Model", ContentType.SiteContent)</label>
+                            </div>
+                        </div>
+                        <div class="g-row">
+                            <div class="g-col-s-3">
+                                <div class="form-group">
+                                    <select id="make" class="form-control form-control--dropdown" name="Make.Id">
+                                        <option value="0">@Translations.Translate("SiteContent.Any", ContentType.SiteContent)</option>
+                                        @foreach (var make in Model.Make)
+                                        {
+                                            <option value="@make.Id">@make.MakeContent.FirstOrDefault(r => r.Language == Current.Culture).Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="g-col-s-3">
+                                <div class="form-group">
+                                    <select disabled="disabled" id="model" class="form-control form-control--dropdown" name="Model.Id">
+                                        <option value="0">@Translations.Translate("SiteContent.Any", ContentType.SiteContent)</option>
+                                        @foreach (var mod in Model.Model)
+                                        {
+                                            <option data-make="@mod.MakeId" value="@mod.Id">@mod.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <section class="cBox-body">
+                                <div class="g-col-s-3">
+                                    <button id="search-btn" class="btn btn-orange" type="submit">
+                                        <i class="icon-search icon-s"></i>
+                                        <span class="hit-counter"></span> @Translations.Translate("SearchButton", ContentType.SiteContent)
+                                    </button>
+                                </div>
+                            </section>
+                            <div class="g-col-s-12">
+                                <div class="radio g-col-s-3 radio-lang">
+                                    <input id="ForSale" type="radio" name="ForRent" value="true">
+                                    <label for="ForSale">@Html.Raw(Translations.Translate("ForSale", ContentType.SiteContent).Replace(" ", "&nbsp;"))</label>
+                                </div>
+                                <div class="radio g-col-s-3 radio-lang">
+                                    <input id="Wanted" type="radio" name="ForRent" value="false">
+                                    <label for="Wanted">@Translations.Translate("Wanted", ContentType.SiteContent)</label>
+                                </div>
+                            </div>
+                            <div class="g-col-s-12">
+                                <h4 class="h3">@Translations.Translate("Index.Page.Box_6.Header.Motor", ContentType.SiteContent)</h4>
+                                <div class="g-row">
+                                    <fieldset>
+                                        @foreach (string fuel in Enum.GetNames(typeof(MotorType)))
+                                        {
+                                            <div class="g-col-s-3 radio-lang">
+                                                <div class="checkbox">
+                                                    <input id="@fuel" name="Motor" type="checkbox" value="@fuel">
+                                                    <label for="@fuel">@Translations.Translate(fuel, ContentType.SiteContent)</label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        @foreach (var culture in Current.Languages)
+        {
+            
+        }
+        initIndex( "@Translations.Translate("Home", ContentType.Controller)",
+            "@Translations.Translate("Index", ContentType.Action)",
+            JSON.parse('@Html.Raw(new JavaScriptSerializer().Serialize(Current.Languages.Select(r =>
+                new { home = Translations.Translate("Home", ContentType.Controller, r.Code),
+                     index = Translations.Translate("Index", ContentType.Action, r.Code) })))'));
+    });
+</script>
+<script src="~/Scripts/index.js"></script>
