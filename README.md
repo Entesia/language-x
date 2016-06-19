@@ -15,7 +15,7 @@ Pull the repo and ensure the database connection string in web.config fits your 
 
 ## Contributors
 
-Idea / Concepts: Entesia AG, Switzerland
+Idea / Concepts: Entesia AG, Switzerland  
 Development: http://www.neutrinosoft.net/ & Entesia AG, Switzerland 
 
 ## License
